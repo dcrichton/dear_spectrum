@@ -37,3 +37,8 @@ def helio2cartesian(glong = 0.0, glat = 0.0, dist = 0.0):
 	cartZ = dist np.cos(glongrad)
 
 	return cartX, cartY, cartZ
+	
+def sdss_pfm2spectrum(plate = None, fiber = None, mjd = None):
+	"""
+	take SDSS plate, fiber, mjd and return a wavelength and flux vector
+	"""
