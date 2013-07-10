@@ -18,14 +18,14 @@ def rad2deg(rad):
 	"""
 	return rad*180.0/Pi
 
-def astro2cartesian(glong, glat, dist):
+def helio2cartesian(glong = 0.0, glat = 0.0, dist = 0.0):
 	"""
-	Converts galactic coordinates to Cartesian
+	Converts helio coordinates to Cartesian
 
 	Input Parameters: 
-		galactic longitude (deg), 
-		galactic latitude (deg), 
-		heliocentric distance ??
+		galactic longitude (deg), "glong"
+		galactic latitude (deg), "glat"
+		heliocentric distance (??), "dist"
 	Returns: Cartsian X, Y, Z
 
 	"""
