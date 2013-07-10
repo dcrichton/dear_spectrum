@@ -15,3 +15,11 @@ class Spectrum(object):
     	self.wave = wave
     	self.flux = flux
     	self.err = err
+    	
+    def coadd(self,spectrum):
+    	"""
+    	Take another spectrum object, interpolate the two to the same
+    	wavelength grid, and coadd
+    	"""
+    	
+    	
