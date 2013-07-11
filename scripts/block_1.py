@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 from argparse import ArgumentParser
 from segue_data import SegueData
-#import dear_spectrum as ds
 
 if __name__ == '__main__':
 
@@ -19,14 +18,14 @@ if __name__ == '__main__':
 	#                            columns = ['RV_ADOP','FEH_ADOP','DIST_ADOP'])
     
 	#opens fits file
-	stars_data=SegueData("~/Scicoder/ssppOut-dr9.fits", columns=['RV_ADOP','DIST_ADOP','FEH_ADOP'],
+	stars_data=SegueData(args.data_filepath, columns=['RV_ADOP','DIST_ADOP','FEH_ADOP'],
 			     memmap=False)
 
 	#find only good data (delete all -9999 values)
  	stars_data.cut_bad_data()
 
 	#plot
-	stars_data.histogram_data('block_1.py', nbins=30, ranges=[0,100])
+	stars_data.histogram_data('block_1.pdf')#, nbins=30, ranges=[0,100])
 	
 
     
