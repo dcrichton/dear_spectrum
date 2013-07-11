@@ -6,6 +6,16 @@ from argparse import ArgumentParser
 
 class SegueData(object):
 
+	"""
+	other methods we want to write:
+	
+	from_dict -- create a new instance of SequeData given a dictionary instead of a file
+	selection -- input a keyword and a cut on that keyword and return a new SequeData object
+				with the same columns, but rows based on cut
+	get_pfm -- return a list of plate,fiber,mjd tuples for every row in the SequeData object 
+				(possible keyword-- selection)
+	"""
+
     def __init__(self,data_filepath, columns = None, memmap = True,
                  nrows = None):
         '''
@@ -34,8 +44,8 @@ class SegueData(object):
                 self.data_dict[col] = data_table.data[col]
             else:
                 self.data_dict[col] = data_table.data[col][:nrows]
-
-
+    
+    
     def cut_bad_data(self):
         '''
         Cut all data with SDSS -9999 flag.
