@@ -6,7 +6,7 @@ from argparse import ArgumentParser
 
 class SegueData(object):
 
-    def __init__(data_filepath, columns = None):
+    def __init__(self,data_filepath, columns = None, memmap = True):
         '''
         Read in SEGUE data.
 
@@ -15,15 +15,38 @@ class SegueData(object):
                  (Default: None)
         
         '''
-        pass
+        hdulist = fits.open(data_filepath, memmap = memmap)
+        data_table = hdulist[1]
 
-    def cut_bad_data():
+        #find spectral types
+	all_spec_types = set(data_table.data['SPECTYPE_HAMMER'])
+	print("Spectral Types: ")
+	print(all_spec_types)
+
+        self.data_dict = {}
+
+        if columns is None:
+            columns = hdulist.columns.names
+        
+        for col in columns:
+            self.data_dict[col] = data_table.data[col]
+
+
+    def cut_bad_data(self):
         '''
         Cut all data with SDSS -9999 flag.
         '''
-        pass
+        for i,(k,v) in enumerate(self.data_dict.items()):
+            if i==0:
+                good_inds = (v != -9999)
+            else:
+                good_inds = good_inds & (v != -9999)
 
-    def histogram_data(out_file, nbins = None, ranges = None, labels = None):
+        for k,v in self.data_dict.items():
+            self.data_dict[k] = v[good_inds]
+
+    def histogram_data(self, out_file):#, nbins = None,
+                       #ranges = None, labels = None):
         '''
         Plot histograms of good data columns.
 
@@ -32,4 +55,12 @@ class SegueData(object):
         labels: X labels of plot. If None, uses column
                 names. (Default None)
         '''
-        pass
+
+        fig, axes = plt.subplots(1,len(self.data_dict.keys()))
+
+        for i,(key,value) in enumerate(self.data_dict.items()):
+            axes[i].hist(value)
+            axes[i].set_xlabel(key.replace('_', ' '))
+            
+	plt.tight_layout()
+	fig.savefig(out_file)
