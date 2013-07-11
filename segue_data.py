@@ -60,7 +60,7 @@ class SegueData(object):
 
         for i,(key,value) in enumerate(self.data_dict.items()):
             axes[i].hist(value)
-            axes[i].set_xlabel(key)
+            axes[i].set_xlabel(key.replace('_', ' '))
             
 	plt.tight_layout()
 	fig.savefig(out_file)
