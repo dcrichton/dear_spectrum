@@ -17,11 +17,11 @@ if __name__ == '__main__':
 	args = parser.parse_args()
 
         stars_data=SegueData(args.data_filepath, columns=['RV_ADOP','DIST_ADOP','FEH_ADOP','L','B'],
-			     memmap = True)
+			     memmap = True, nrows = 10000)
 
         stars_data.cut_bad_data()
 
-        GCENT, Z = [], [], []
+        GCENT, Z = [], []
         for glong, glat, dist in zip(stars_data.data_dict['L'],
                                      stars_data.data_dict['B'],
                                      stars_data.data_dict['DIST_ADOP']):
@@ -30,7 +30,8 @@ if __name__ == '__main__':
             dist = u.kiloparsec*dist
             x,y,z = helio2cartesian(glong,glat,dist)
             Z.append(z)
-            GCENT.append((X**2+Y**2+Z**2)**.5)
+            print(len(Z),len(stars_data.data_dict['L']))
+            GCENT.append((x**2+y**2+z**2)**.5)
 
         stars_data.data_dict['GCENT_DIST'] = GCENT
         stars_data.data_dict.pop('L')

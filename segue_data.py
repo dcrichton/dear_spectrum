@@ -6,7 +6,8 @@ from argparse import ArgumentParser
 
 class SegueData(object):
 
-    def __init__(self,data_filepath, columns = None, memmap = True):
+    def __init__(self,data_filepath, columns = None, memmap = True,
+                 nrows = None):
         '''
         Read in SEGUE data.
 
@@ -27,9 +28,12 @@ class SegueData(object):
 
         if columns is None:
             columns = hdulist.columns.names
-        
+
         for col in columns:
-            self.data_dict[col] = data_table.data[col]
+            if nrows is None:
+                self.data_dict[col] = data_table.data[col]
+            else:
+                self.data_dict[col] = data_table.data[col][:nrows]
 
 
     def cut_bad_data(self):
