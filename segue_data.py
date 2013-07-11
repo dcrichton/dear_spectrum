@@ -6,7 +6,7 @@ from argparse import ArgumentParser
 
 class SegueData(object):
 
-    def __init__(self,data_filepath, columns = None):
+    def __init__(self,data_filepath, columns = None, memmap = True):
         '''
         Read in SEGUE data.
 
@@ -15,8 +15,13 @@ class SegueData(object):
                  (Default: None)
         
         '''
-        hdulist = fits.open(data_filepath, memmap=True)
+        hdulist = fits.open(data_filepath, memmap = memmap)
         data_table = hdulist[1]
+
+        #find spectral types
+	all_spec_types = set(data_table.data['SPECTYPE_HAMMER'])
+	print("Spectral Types: ")
+	print(all_spec_types)
 
         self.data_dict = {}
 
@@ -24,7 +29,7 @@ class SegueData(object):
             columns = hdulist.columns.names
         
         for col in columns:
-            self.data_dict[col] = table.data[col]
+            self.data_dict[col] = data_table.data[col]
 
 
     def cut_bad_data(self):
@@ -37,11 +42,11 @@ class SegueData(object):
             else:
                 good_inds = good_inds & (v != -9999)
 
-        for k,v in self.data_dict:
+        for k,v in self.data_dict.items():
             self.data_dict[k] = v[good_inds]
 
-    def histogram_data(self, out_file, nbins = None,
-                       ranges = None, labels = None):
+    def histogram_data(self, out_file):#, nbins = None,
+                       #ranges = None, labels = None):
         '''
         Plot histograms of good data columns.
 
@@ -50,20 +55,12 @@ class SegueData(object):
         labels: X labels of plot. If None, uses column
                 names. (Default None)
         '''
-        # fig, axes = plt.subplots(1,len(self.data_dict.keys()))
-        
-        # for ax,(k,v) in zip(axes,
-        #                     self.data_dict.iteritems(),
-        #                     bins,ranges):
-        #     ax.hist(radial_velocity,bins=30)
-            
 
-        
-	# axes[0].hist(radial_velocity,bins=30)
-	# axes[0].set_xlabel("Radial Velocity")
-	# axes[1].hist(heliocentric_distance,range=[0,100],bins=30)
-	# axes[1].set_xlabel("Heliocentric Distance")
-	# axes[2].hist(metallicity,bins=30)
-	# axes[2].set_xlabel("FeH")
-	# plt.tight_layout()
-	# fig.savefig("block_1.pdf")
+        fig, axes = plt.subplots(1,len(self.data_dict.keys()))
+
+        for i,(key,value) in enumerate(self.data_dict.items()):
+            axes[i].hist(value)
+            axes[i].set_xlabel(key)
+            
+	plt.tight_layout()
+	fig.savefig(out_file)
