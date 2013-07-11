@@ -22,8 +22,8 @@ def rad2deg(rad):
 	"""
 	return rad*180.0/Pi
 
- def return_keys(dictionary):
-    	print dictionary.keys()
+def return_keys(dictionary):
+    	print(dictionary.keys())
     	return dictionary.keys()
 
 def helio2cartesian(glong = 0.0*u.deg, glat = 0.0*u.deg, dist = 0.0* u.parsec):
