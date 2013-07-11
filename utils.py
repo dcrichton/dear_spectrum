@@ -4,7 +4,7 @@ from __future__ import print_function, division
 
 from astropy import units
 import numpy as np
-from astropy.units as u
+import astropy.units as u
 import json
 import urllib2
 
