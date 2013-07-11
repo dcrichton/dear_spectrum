@@ -19,7 +19,7 @@ if __name__ == '__main__':
     
 	#opens fits file
 	stars_data=SegueData(args.data_filepath, columns=['RV_ADOP','DIST_ADOP','FEH_ADOP'],
-			     memmap=False)
+			     memmap = True)
 
 	#find only good data (delete all -9999 values)
  	stars_data.cut_bad_data()
