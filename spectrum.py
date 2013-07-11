@@ -37,8 +37,7 @@ class Spectrum(object):
     	self.spectrum = spectrum
     	
     def show_keys(self):
-    	print self.spectrum.keys()
-    	return self.spectrum.keys()
+    	return_keys(self.spectrum)
     
     def interpolate_spectra(self,other_spectrum):
     	wavelength_interpolation = interpolate.interp1d(other_spectrum['wavelengths'], 
