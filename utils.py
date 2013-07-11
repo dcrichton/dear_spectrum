@@ -9,7 +9,6 @@ import json
 import urllib2
 
 Pi = np.pi
-_Rsun
 
 def deg2rad(deg):
 	"""
@@ -41,8 +40,8 @@ def helio2cartesian(glong = 0.0*u.deg, glat = 0.0*u.deg, dist = 0.0* u.parsec):
 	# Distance from the sun to the galactic center?
 	_R0 = 8*u.kiloparsec
 
-	cartX = dist * np.sin(0.5*glong.to(u.rad).value)* \ 
-		np.cos((glat+180*u.deg).to(u.rad).value) - _R0
+	cartX = (dist * np.sin(0.5*glong.to(u.rad).value)* 
+                 np.cos((glat+180*u.deg).to(u.rad).value) - _R0)
 	cartY = dist * np.sin(0.5*glong.to(u.rad).value)*np.sin(glat.to(u.rad).value)
 	cartZ = dist * np.cos(glong.to(u.rad))
 
