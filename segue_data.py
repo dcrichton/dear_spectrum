@@ -14,36 +14,39 @@ class SegueData(object):
 	get_pfm -- return a list of plate,fiber,mjd tuples for every row in the SequeData object 
 	                        (possible keyword-- selection)
 	"""
-	def __init__(self, data_filepath, columns = None, memmap = True,
-	            nrows = None):
+	def __init__(self, data_filepath = None, data_dict = None,
+                     columns = None, memmap = True, nrows = None):
 		'''
-		Read in SEGUE data.
+		Read in SEGUE data. Must specify either data_filepath
+                or data_dict.
 
 		data_filepath: Location of data file.
 		columns: Columns to retain. If None, keep all.
 		         (Default: None)
 		
 		'''
-		hdulist = fits.open(data_filepath, memmap = memmap)
-		data_table = hdulist[1]
 
-		#find spectral types
-                all_spec_types = set(data_table.data['SPECTYPE_HAMMER'])
-                print("Spectral Types: ")
-                print(all_spec_types)
+                if data_filepath is None and (not data_dict is None):
+                        self.data_dict = data_dict
+                elif (not data_filepath is None):
+                        hdulist = fits.open(data_filepath, memmap = memmap)
+                        data_table = hdulist[1]
 
-		self.data_dict = {}
+                        #find spectral types
+                        all_spec_types = set(data_table.data['SPECTYPE_HAMMER'])
+                        print("Spectral Types: ")
+                        print(all_spec_types)
 
-		if columns is None:
-			columns = hdulist.columns.names
+                        self.data_dict = {}
 
-		for col in columns:
-			if nrows is None:
-				self.data_dict[col] = data_table.data[col]
-			else:
-				self.data_dict[col] = data_table.data[col][:nrows]
-	
-	
+                        if columns is None:
+                                columns = hdulist.columns.names
+                                for col in columns:
+                                        if nrows is None:
+                                                self.data_dict[col] = data_table.data[col]
+                                        else:
+                                                self.data_dict[col] = data_table.data[col][:nrows]
+
 	def cut_bad_data(self):
 		'''
 		Cut all data with SDSS -9999 flag.
