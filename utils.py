@@ -42,7 +42,7 @@ def helio2cartesian(glong = 0.0*u.deg, glat = 0.0*u.deg, dist = 0.0* u.parsec):
 		raise AttributeError('Input parameters must be Quantity-like objects')
 
 	# Distance from the sun to the galactic center?
-	_R0 = 8*u.kiloparsec
+	_R0 = 8.0*u.kiloparsec
 
 	cartX = (dist * np.sin(0.5*glong.to(u.rad).value)* 
                  np.cos((glat+180*u.deg).to(u.rad).value) - _R0)
