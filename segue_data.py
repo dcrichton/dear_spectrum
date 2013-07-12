@@ -110,3 +110,9 @@ class SegueData(object):
 			axes[i].set_xlabel(key.replace('_', ' '))
                 plt.tight_layout()
                 fig.savefig(out_file)
+                
+    def get_cols(self,column_keys, **kwargs):
+   		"""	
+    	get_cols -- return a list of columns requested as tuples for every row in the SequeData object 
+	                        (possible keyword-- selection)
+		"""
