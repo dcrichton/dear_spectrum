@@ -26,9 +26,9 @@ class SegueData(object):
 		
 		'''
 
-                if data_filepath is None and (not data_dict is None):
+                if (data_filepath is None) and not (data_dict is None):
                         self.data_dict = data_dict
-                elif (not data_filepath is None):
+                elif not (data_filepath is None):
                         hdulist = fits.open(data_filepath, memmap = memmap)
                         data_table = hdulist[1]
 
@@ -41,22 +41,43 @@ class SegueData(object):
 
                         if columns is None:
                                 columns = hdulist.columns.names
-                                for col in columns:
-                                        if nrows is None:
-                                                self.data_dict[col] = data_table.data[col]
-                                        else:
-                                                self.data_dict[col] = data_table.data[col][:nrows]
+                        for col in columns:
+                                if nrows is None:
+                                        self.data_dict[col] = data_table.data[col]
+                                else:
+                                        self.data_dict[col] = data_table.data[col][:nrows]
 
-        def select(self, column, selection_function):
+        def iterrows(self):
+                '''
+                Returns an iterable the traverses through the stored rows
+                and returns a dict of column:row_value for each row.
+                '''
+                cols = self.data_dict.keys()
+                for i in range(len(self.data_dict[cols[0]])):
+                        yield {c:self.data_dict[c][i] for c in cols}
+                                        
+        def select(self, column, selection_function = None):
                 '''
                 Return a SegueData data object which is the current object
-                cut using a selection function operated on column.
+                cut using a selection function operated on column. As well
+                as the indices that were cut.
 
                 column: Column to select with.
                 selection_function: A function that returns true for
-                values of the column that will be returned. 
+                values of the column that will be returned. If None
+                return all rows in the column. (Default: None)
                 '''
-                pass
+                if not column in self.data_dict.keys():
+                        raise ValueError("Column does not exist.")
+
+                if selection_function is None:
+                        indices = np.ones(len(self.data_dict[column]),dtype=bool)
+                else:
+                        indices = selection_function(self.data_dict[column])
+                new_dict = {}
+                for col in self.data_dict.keys():
+                        new_dict[col] = self.data_dict[col][indices]
+                return SegueData(data_dict = new_dict), indices
                                                 
 	def cut_bad_data(self):
 		'''
