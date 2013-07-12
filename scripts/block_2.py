@@ -30,10 +30,9 @@ if __name__ == '__main__':
 		dist = u.kiloparsec*dist
 		x,y,z = helio2cartesian(glong,glat,dist)
 		Z.append(z)
-		print(len(Z),len(stars_data.data_dict['L']))
 		GCENT.append((x**2+y**2+z**2)**.5)
 
-	stars_data.data_dict['GCENT_DIST'] = GCENT
+	stars_data.data_dict['GCENT_DIST'] = np.array(GCENT)
 	stars_data.data_dict.pop('L')
 	stars_data.data_dict.pop('B')
 	stars_data.data_dict.pop('DIST_ADOP')
