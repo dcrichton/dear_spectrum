@@ -127,7 +127,7 @@ class SegueData(object):
 			get_cols_dictionary = new_cols.data_dict
 		
 		list_to_return = []	
-		for row in get_cols_dictionary.iter_rows():
+		for row in get_cols_dictionary.iterrows():
 			my_tuple = ()
 			for column in columns_to_return:
 				my_tuple = my_tuple + (row[column],)
