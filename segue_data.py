@@ -111,7 +111,7 @@ class SegueData(object):
                 plt.tight_layout()
                 fig.savefig(out_file)
                 
-     def get_cols(self,columns_to_return,column_to_select=None,selection_function = None):
+        def get_cols(self,columns_to_return,column_to_select=None,selection_function = None):
    		"""	
     	get_cols -- return a list of columns requested as tuples for every row in the SequeData object 
 	                        (possible keyword-- selection)
