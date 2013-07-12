@@ -47,6 +47,17 @@ class SegueData(object):
                                         else:
                                                 self.data_dict[col] = data_table.data[col][:nrows]
 
+        def select(self, column, selection_function):
+                '''
+                Return a SegueData data object which is the current object
+                cut using a selection function operated on column.
+
+                column: Column to select with.
+                selection_function: A function that returns true for
+                values of the column that will be returned. 
+                '''
+                pass
+                                                
 	def cut_bad_data(self):
 		'''
 		Cut all data with SDSS -9999 flag.
