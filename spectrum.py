@@ -34,7 +34,10 @@ class Spectrum(object):
     		"""
     		plate,fiber,mjd = sdss
     		spectrum = sdss_pfm2spectrum(plate = plate,fiber = fiber, mjd = mjd)
-    	self.spectrum = spectrum
+    		if len(spectrum.keys()) > 1:
+    			raise ValueError("Spectrum object only accepts a single spectrum")
+    		
+    	self.spectrum = spectrum[spectrum.keys()[0]]
     	
     def show_keys(self):
     	return_keys(self.spectrum)

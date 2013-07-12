@@ -90,8 +90,25 @@ class SegueData(object):
                 plt.tight_layout()
                 fig.savefig(out_file)
                 
-    def get_cols(self,column_keys, **kwargs):
+    def get_cols(self,columns_to_return,column_to_select=None,selection_function = None):
    		"""	
     	get_cols -- return a list of columns requested as tuples for every row in the SequeData object 
 	                        (possible keyword-- selection)
 		"""
+		for column in columns_to_return:
+			if column not in self.data_dict.keys():
+				raise KeyError("requested column does not exist in Seque_Data object")
+		
+		get_cols_dictionary = self.data_dict	
+					
+		if column_to_select:
+			new_cols,indices = self.select(column_to_select,selection_function)
+			get_cols_dictionary = new_cols.data_dict
+		
+		list_to_return = []	
+		for row in get_cols_dictionary.iter_rows():
+			my_tuple = ()
+			for column in columns_to_return:
+				my_tuple = my_tuple + (row[column],)
+			list_to_return.append(my_tuple)
+		return list_to_return
